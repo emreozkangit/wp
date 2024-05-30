@@ -33,7 +33,20 @@ metadata:
 spec:
   ports:
     - port: 80
+      targetPort: 80
   selector:
     app: wordpress
-  type: LoadBalancer
-
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: wordpress
+spec:
+  to:
+    kind: Service
+    name: wordpress
+  port:
+    targetPort: 80
+  tls:
+    termination: edge
